@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Wedding Planner & Organizer</title>
+  
+  <!-- Optimasi Apple iOS Web App -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Wedding Planner" />
+  <meta name="theme-color" content="#F7F4EF" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F7F4EF;
+      --card-bg: #FFFFFF;
+      --primary: #B86B49;
+      --primary-dark: #8C4E33;
+      --primary-soft: #F9EFE9;
+      --text: #282421;
+      --text-muted: #8E847E;
+      --border: #EDE7DF;
+      --green: #2E7D32;
+      --green-bg: #E8F5E9;
+      --orange-bg: #FFF3E0;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+    
+    body {
+      background-color: #EFECE6;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      color: var(--text);
+    }
+    
+    .app-viewport {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 35px rgba(0,0,0,0.06);
+      padding-bottom: 95px;
+      transition: all 0.3s ease;
+    }
+
+    .header-top {
+      padding: 24px 20px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .header-greeting { font-size: 0.85rem; color: var(--text-muted); }
+    .header-names { font-size: 1.45rem; font-weight: 800; color: var(--text); }
+    .header-countdown-sub { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
+    .btn-notif {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: #fff; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 1.1rem;
+    }
+
+    .desktop-header-nav { display: none; }
+    .view { display: none; padding: 12px 18px; }
+    .view.active { display: block; }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    }
+    
+    .hero-countdown { text-align: center; padding: 26px 16px; }
+    .hero-date-title { font-size: 0.95rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+    .hero-big-number { font-size: 4.4rem; font-weight: 800; color: var(--primary); line-height: 1; }
+    .hero-big-lbl { font-size: 1rem; color: var(--text-muted); margin: 6px 0 18px; }
+    .hero-pills-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .hero-pill {
+      background: #FAF6F2; border: 1px solid var(--border);
+      padding: 8px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: var(--text);
+    }
+
+    .section-title { font-size: 1.15rem; font-weight: 800; color: var(--text); }
+    .section-subtitle { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; }
+    .grid-3-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+    .action-card {
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 14px 8px; text-align: center;
+      cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px;
+      transition: transform 0.15s;
+    }
+    .action-card:active { transform: scale(0.97); }
+    .action-icon-box {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.25rem;
+    }
+    .action-name { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+    .action-desc { font-size: 0.68rem; color: var(--text-muted); }
+
+    .anggaran-summary-box { display: flex; align-items: center; gap: 16px; }
+    .circle-chart {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: conic-gradient(var(--primary) var(--deg, 0deg), #EFEAE4 0);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .circle-inner {
+      width: 50px; height: 50px; background: #fff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; color: var(--text);
+    }
+    .anggaran-meta-num { font-size: 1.45rem; font-weight: 800; color: var(--text); line-height: 1.1; }
+    .anggaran-meta-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+    .anggaran-dots { display: flex; gap: 10px; font-size: 0.75rem; margin-top: 6px; color: var(--text-muted); }
+
+    .segmented-control {
+      background: #EFEAE4; border-radius: 14px; display: flex; padding: 4px; margin-bottom: 16px; gap: 4px;
+    }
+    .segment-btn {
+      flex: 1; padding: 9px 0; border: none; background: transparent;
+      border-radius: 10px; font-size: 0.85rem; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; text-align: center;
+    }
+    .segment-btn.active { background: #fff; color: var(--text); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+
+    .brown-card {
+      background: #8E5638; color: #fff; border-radius: var(--radius-lg); padding: 22px 20px; margin-bottom: 14px;
+    }
+    .brown-top { display: flex; justify-content: space-between; align-items: center; }
+    .brown-btn {
+      background: rgba(255,255,255,0.22); border: none; color: #fff;
+      padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+    }
+    .brown-amt { font-size: 2.1rem; font-weight: 800; margin: 12px 0 16px; }
+    .brown-progress-bar { height: 6px; background: rgba(255,255,255,0.3); border-radius: 6px; overflow: hidden; }
+    .brown-progress-fill { height: 100%; background: #fff; border-radius: 6px; width: 0%; transition: width 0.3s; }
+    .brown-btm { display: flex; justify-content: space-between; font-size: 0.75rem; margin-top: 8px; opacity: 0.95; }
+
+    .budget-item-card {
+      background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md);
+      padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .budget-item-left { display: flex; align-items: center; gap: 12px; }
+    .budget-item-icon {
+      width: 38px; height: 38px; border-radius: 10px; background: #FAF6F2;
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+    }
+    .budget-item-title { font-size: 0.92rem; font-weight: 700; color: var(--text); }
+    .budget-item-est { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+    .btn-action-icon { background: none; border: none; font-size: 1rem; cursor: pointer; color: var(--text-muted); padding: 4px; }
+
+    .milestone-box {
+      background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md);
+      padding: 16px; margin-bottom: 12px; transition: border-color 0.2s;
+    }
+    .milestone-box.selected { border-color: #D6B5A4; }
+    .milestone-top { display: flex; justify-content: space-between; align-items: center; }
+    .milestone-left { display: flex; align-items: center; gap: 12px; cursor: pointer; flex: 1; }
+    .milestone-circle-check {
+      width: 24px; height: 24px; border-radius: 50%; border: 2px solid #D6CEC5;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .milestone-circle-check.checked { background: var(--primary); border-color: var(--primary); color: #fff; font-size: 0.75rem; }
+    .milestone-icon-wrap {
+      width: 40px; height: 40px; border-radius: 12px; background: #FAF6F2;
+      display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;
+    }
+    .milestone-title { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+    .milestone-desc { font-size: 0.74rem; color: var(--text-muted); margin-top: 2px; line-height: 1.25; }
+    .milestone-right { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--text-muted); cursor: padding-left: 8px; }
+    
+    .task-sublist { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border); display: none; }
+    .task-sublist.open { display: block; }
+    .task-line {
+      display: flex; align-items: center; justify-content: space-between; padding: 8px 0;
+      font-size: 0.85rem; color: var(--text); border-bottom: 1px solid #FAF6F2;
+    }
+    .task-line-left { display: flex; align-items: center; gap: 10px; flex: 1; }
+    .task-line input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
+    .task-line.done span { text-decoration: line-through; color: var(--text-muted); }
+    .btn-task-del { background: none; border: none; color: #DC2626; cursor: pointer; font-size: 0.85rem; padding: 2px 6px; opacity: 0.6; }
+
+    .add-task-inline-box { display: flex; gap: 8px; margin-top: 12px; padding-top: 8px; }
+    .input-task-inline {
+      flex: 1; background: #FAF6F2; border: 1px solid var(--border);
+      padding: 9px 12px; border-radius: var(--radius-sm); font-size: 0.82rem; outline: none;
+    }
+    .input-task-inline:focus { border-color: var(--primary); background: #fff; }
+    .btn-task-inline {
+      background: var(--primary); color: #fff; border: none;
+      padding: 0 14px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 700; cursor: pointer;
+    }
+
+    .home-task-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0; border-bottom: 1px solid #FAF6F2; font-size: 0.86rem;
+    }
+    .home-task-item:last-child { border-bottom: none; }
+    .home-task-left { display: flex; align-items: center; gap: 10px; flex: 1; }
+    .home-task-left input { width: 18px; height: 18px; accent-color: var(--primary); }
+    .task-badge-ms {
+      font-size: 0.68rem; font-weight: 700; background: var(--primary-soft);
+      color: var(--primary-dark); padding: 2px 7px; border-radius: 6px; display: inline-block; margin-bottom: 2px;
+    }
+
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px); z-index: 999; display: none; align-items: flex-end; justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .bottom-sheet {
+      width: 100%; max-width: 440px; background: #fff;
+      border-radius: 26px 26px 0 0; padding: 22px 20px 34px;
+      animation: slideUp 0.22s ease-out; max-height: 88vh; overflow-y: auto;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .sheet-handle { width: 44px; height: 5px; background: #E0DAD3; border-radius: 10px; margin: 0 auto 16px; }
+    .sheet-title { font-size: 1.2rem; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+    .sheet-subtitle { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px; }
+
+    .input-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 5px; }
+    .input-label { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); }
+    .app-input, .app-select, .app-textarea {
+      background: #F8F5F1; border: 1px solid var(--border);
+      padding: 12px 14px; border-radius: var(--radius-sm); font-size: 0.9rem; outline: none; width: 100%;
+    }
+    .app-input:focus, .app-select:focus, .app-textarea:focus { border-color: var(--primary); background: #fff; }
+
+    .status-pills-row { display: flex; gap: 8px; margin-bottom: 14px; }
+    .status-pill {
+      flex: 1; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+      background: #F8F5F1; font-size: 0.85rem; font-weight: 600; text-align: center; cursor: pointer;
+    }
+    .status-pill.active { background: #2F5941; color: #fff; border-color: #2F5941; }
+
+    .btn-row { display: flex; gap: 10px; margin-top: 18px; }
+    .btn-app-main {
+      flex: 1; background: var(--primary); color: #fff;
+      padding: 12px; border-radius: var(--radius-sm); border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer;
+    }
+    .btn-app-secondary {
+      flex: 1; background: #EFEAE4; color: var(--text);
+      padding: 12px; border-radius: var(--radius-sm); border: none; font-weight: 700; font-size: 0.95rem; cursor: pointer;
+    }
+
+    .bottom-navbar {
+      position: fixed; bottom: 0; width: 100%; max-width: 440px;
+      background: #FFFFFF; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-around; padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 10px)); z-index: 100;
+    }
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      border: none; background: transparent; color: var(--text-muted); cursor: pointer;
+      font-size: 0.72rem; font-weight: 600; flex: 1;
+    }
+    .nav-item.active { color: var(--primary); }
+    .nav-item-icon { font-size: 1.35rem; }
+
+    .secondary-top-bar {
+      display: flex; align-items: center; gap: 12px; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+    .btn-back {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1px solid var(--border); background: #fff;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.3rem;
+    }
+
+    @media (min-width: 768px) {
+      body { background-color: #ECE7DF; padding: 30px 20px 60px; }
+      .app-viewport {
+        max-width: 1140px; border-radius: 28px; box-shadow: 0 15px 45px rgba(0,0,0,0.07);
+        padding: 24px 32px 40px; margin: 0 auto;
+      }
+      .bottom-navbar { display: none !important; }
+      .header-top { padding: 0 0 20px 0; border-bottom: 1px solid var(--border); align-items: center; }
+      .header-names { font-size: 1.8rem; }
+      
+      .desktop-header-nav {
+        display: flex; align-items: center; gap: 8px; background: #FAF6F2;
+        padding: 6px 8px; border-radius: 30px; border: 1px solid var(--border);
+      }
+      .desktop-nav-btn {
+        background: transparent; border: none; padding: 8px 18px; border-radius: 20px;
+        font-size: 0.85rem; font-weight: 700; color: var(--text-muted); cursor: pointer;
+        display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+      }
+      .desktop-nav-btn.active { background: #fff; color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+      .view { padding: 24px 0 0; }
+      .desktop-beranda-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px; align-items: flex-start; }
+      #milestonesContainer { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .desktop-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .desktop-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .modal-overlay { align-items: center; }
+      .bottom-sheet {
+        border-radius: 24px; max-width: 520px; animation: popIn 0.2s cubic-bezier(0.16, 1, 0.3, 1); padding: 28px;
+      }
+      @keyframes popIn {
+        from { transform: scale(0.92); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+      .sheet-handle { display: none; }
+      .btn-back { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-viewport">
+  <!-- Top Bar -->
+  <div class="header-top">
+    <div>
+      <div class="header-greeting">Halo,</div>
+      <div class="header-names" id="topCoupleDisplay">Calon Pengantin</div>
+      <div class="header-countdown-sub" id="topDaysSub">Rencanakan pernikahanmu</div>
+    </div>
+
+    <!-- Desktop Navigation Menu -->
+    <div class="desktop-header-nav">
+      <button class="desktop-nav-btn active" onclick="switchMainView('view-beranda')">🏠 Beranda</button>
+      <button class="desktop-nav-btn" onclick="switchMainView('view-checklist')">🎚️ Checklist</button>
+      <button class="desktop-nav-btn" onclick="switchMainView('view-anggaran')">👛 Anggaran</button>
+      <button class="desktop-nav-btn" onclick="switchMainView('view-vendor')">🏪 Vendor</button>
+      <button class="desktop-nav-btn" onclick="switchMainView('view-tamu')">👥 Tamu</button>
+      <button class="desktop-nav-btn" onclick="switchMainView('view-profil')">👤 Profil</button>
+    </div>
+
+    <div class="btn-notif" onclick="switchMainView('view-profil')" title="Pengaturan Profil">⚙️</div>
+  </div>
+
+  <!-- VIEW 1: BERANDA -->
+  <div id="view-beranda" class="view active">
+    <div class="card hero-countdown">
+      <div class="hero-date-title" id="heroDateDisplay">Tentukan Tanggal Acara</div>
+      <div class="hero-big-number" id="heroMainDays">0</div>
+      <div class="hero-big-lbl">hari lagi</div>
+      <div class="hero-pills-row">
+        <div class="hero-pill" id="pillMonths">0 bln</div>
+        <div class="hero-pill" id="pillWeeks">0 mgg</div>
+        <div class="hero-pill" id="pillDays">0 hr</div>
+      </div>
+    </div>
+
+    <div class="desktop-beranda-grid">
+      <div>
+        <div class="section-title">Persiapan Nikah</div>
+        <div class="section-subtitle">Semua kebutuhanmu dalam satu tempat</div>
+        <div class="grid-3-cards">
+          <div class="action-card" onclick="goToAnggaranTab('dana-nikah')">
+            <div class="action-icon-box" style="background: #FDF2E9; color: #D97706;">👛</div>
+            <div class="action-name">Dana Nikah</div>
+            <div class="action-desc">Nabung bareng</div>
+          </div>
+          <div class="action-card" onclick="switchMainView('view-vendor')">
+            <div class="action-icon-box" style="background: #ECFDF5; color: #059669;">🏪</div>
+            <div class="action-name">Vendor</div>
+            <div class="action-desc">Kelola pilihan</div>
+          </div>
+          <div class="action-card" onclick="switchMainView('view-tamu')">
+            <div class="action-icon-box" style="background: #EFF6FF; color: #2563EB;">👥</div>
+            <div class="action-name">Daftar Tamu</div>
+            <div class="action-desc">Undangan & RSVP</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="font-weight: 800; font-size: 0.95rem;">Anggaran</div>
+            <span style="font-size: 0.8rem; color: var(--primary); font-weight: 700; cursor: pointer;" onclick="switchMainView('view-anggaran')">Lihat detail</span>
+          </div>
+          <div class="anggaran-summary-box">
+            <div class="circle-chart" id="circleProgressHome" style="--deg: 0deg;">
+              <div class="circle-inner" id="percentHome">0%</div>
+            </div>
+            <div>
+              <div class="anggaran-meta-num" id="homeTotalExpense">Rp 0</div>
+              <div class="anggaran-meta-sub" id="homeTotalBudgetSub">terpakai dari Rp 0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="height: calc(100% - 16px);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div>
+              <div style="font-weight: 800; font-size: 0.95rem;">Tugas Bulan Ini</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);" id="currentMonthYear">Bulan Ini</div>
+            </div>
+            <span style="font-size: 0.8rem; color: var(--primary); font-weight: 700; cursor: pointer;" onclick="switchMainView('view-checklist')">Lihat semua</span>
+          </div>
+          <div id="homeTaskListContainer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 2: CHECKLIST -->
+  <div id="view-checklist" class="view">
+    <div class="secondary-top-bar" style="border-bottom: none; margin-bottom: 4px; padding-bottom: 0;">
+      <button class="btn-back" onclick="handleCustomBack()">‹</button>
+      <div>
+        <div class="section-title">Pilih Milestone</div>
+        <div class="section-subtitle" style="margin-bottom: 0;">Pilih persiapan yang ingin kamu aktifkan</div>
+      </div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0 16px;">
+      <span style="font-size: 0.9rem; font-weight: 700; color: var(--text);" id="milestoneCounterText">0 dari 10 milestone dipilih</span>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <button style="padding: 8px 16px; background: #fff; border: 1.5px dashed var(--primary); border-radius: var(--radius-md); color: var(--primary); font-weight: 700; font-size: 0.84rem; cursor: pointer;" onclick="openAddMilestoneModal()">
+          ✨ + Tambah Milestone
+        </button>
+        <span style="font-size: 0.84rem; color: var(--primary); font-weight: 700; cursor: pointer;" id="btnToggleAllMilestones" onclick="toggleSelectAllMilestones()">Pilih semua</span>
+      </div>
+    </div>
+
+    <div id="milestonesContainer"></div>
+  </div>
+
+  <!-- VIEW 3: ANGGARAN -->
+  <div id="view-anggaran" class="view">
+    <div class="secondary-top-bar" style="border-bottom: none; margin-bottom: 4px; padding-bottom: 0;">
+      <button class="btn-back" onclick="handleCustomBack()">‹</button>
+      <div class="section-title">Anggaran Pernikahan</div>
+    </div>
+
+    <div class="card" style="padding: 16px;">
+      <div class="anggaran-summary-box">
+        <div class="circle-chart" id="circleProgressAnggaran" style="--deg: 0deg;">
+          <div class="circle-inner" id="percentAnggaran">0%</div>
+        </div>
+        <div>
+          <div class="anggaran-meta-num" id="anggaranRealisasi">Rp 0</div>
+          <div class="anggaran-meta-sub" id="anggaranTargetSub">realisasi dari Rp 0</div>
+          <div class="anggaran-dots">
+            <span id="dotEst">● Est. Rp 0</span>
+            <span id="dotSisa">● Sisa Rp 0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="segmented-control">
+      <button class="segment-btn active" id="btnTabBudgeting" onclick="switchAnggaranTab('budgeting')">Budgeting</button>
+      <button class="segment-btn" id="btnTabPengeluaran" onclick="switchAnggaranTab('pengeluaran')">Pengeluaran</button>
+      <button class="segment-btn" id="btnTabDanaNikah" onclick="switchAnggaranTab('dana-nikah')">Dana Nikah</button>
+    </div>
+
+    <div id="anggaran-sub-budgeting">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-bottom: 14px; background: #fff; padding: 14px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+        <div>
+          <div style="font-size: 1.05rem; font-weight: 800;" id="boxBudgetPlafon">Rp 0</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); cursor: pointer;" onclick="openBudgetModal()">Total Budget · <span style="color: var(--primary); font-weight: 700;">ubah</span></div>
+        </div>
+        <div>
+          <div style="font-size: 1.05rem; font-weight: 800;" id="boxBudgetEst">Rp 0</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted);">Estimasi</div>
+        </div>
+        <div>
+          <div style="font-size: 1.05rem; font-weight: 800;" id="boxBudgetSisa">Rp 0</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted);">Sisa Est.</div>
+        </div>
+      </div>
+
+      <div id="budgetCategoryList" class="desktop-grid-2"></div>
+
+      <button style="width: 100%; padding: 14px; background: transparent; border: 1px dashed var(--primary); border-radius: var(--radius-md); color: var(--primary); font-weight: 700; font-size: 0.9rem; cursor: pointer; margin-top: 12px;" onclick="openAddCategoryModal()">
+        + Tambah Kategori
+      </button>
+    </div>
+
+    <div id="anggaran-sub-pengeluaran" style="display: none;">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px;">
+        <div style="background: var(--green-bg); padding: 14px; border-radius: var(--radius-sm); text-align: center;">
+          <div style="font-size: 1rem; font-weight: 800; color: #166534;" id="statLunas">Rp 0</div>
+          <div style="font-size: 0.72rem; color: #166534; font-weight: 600;">Lunas</div>
+        </div>
+        <div style="background: var(--orange-bg); padding: 14px; border-radius: var(--radius-sm); text-align: center;">
+          <div style="font-size: 1rem; font-weight: 800; color: #9A3412;" id="statDp">Rp 0</div>
+          <div style="font-size: 0.72rem; color: #9A3412; font-weight: 600;">DP</div>
+        </div>
+        <div style="background: #F3F4F6; padding: 14px; border-radius: var(--radius-sm); text-align: center;">
+          <div style="font-size: 1rem; font-weight: 800; color: #4B5563;" id="statBelum">Rp 0</div>
+          <div style="font-size: 0.72rem; color: #4B5563; font-weight: 600;">Belum Bayar</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <div style="font-size: 0.9rem; color: var(--text-muted); font-weight: 600;" id="countTransactions">0 transaksi</div>
+        <button style="background: var(--primary); color: #fff; border: none; padding: 8px 18px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer;" onclick="openAddExpenseModal()">+ Catat Pengeluaran</button>
+      </div>
+
+      <div id="expenseListContainer" class="desktop-grid-2"></div>
+    </div>
+
+    <div id="anggaran-sub-dananikah" style="display: none;">
+      <div class="desktop-grid-2">
+        <div class="brown-card">
+          <div class="brown-top">
+            <span style="font-size: 0.85rem;">Dana terkumpul</span>
+            <button class="brown-btn" onclick="openBudgetModal()">Atur target</button>
+          </div>
+          <div class="brown-amt" id="brownCollected">Rp 0</div>
+          <div class="brown-progress-bar">
+            <div class="brown-progress-fill" id="brownFill"></div>
+          </div>
+          <div class="brown-btm">
+            <span id="brownPct">0% terkumpul</span>
+            <span id="brownTargetLbl">Target Rp 0</span>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+          <div class="card" style="margin-bottom: 0; padding: 18px;">
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Masih dibutuhkan</div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: var(--text); margin-top: 6px;" id="danaNeeded">Rp 0</div>
+          </div>
+          <div class="card" style="margin-bottom: 0; padding: 18px;">
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Saran per bulan</div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: var(--text); margin-top: 6px;" id="danaMonthlyAdvice">Rp 0</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin: 12px 0 10px;">
+        <div style="font-size: 0.95rem; font-weight: 800; color: var(--text);">Riwayat tabungan</div>
+        <button style="background: var(--primary); color: #fff; border: none; padding: 8px 18px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer;" onclick="openAddSavingModal()">+ Catat Tabungan</button>
+      </div>
+
+      <div id="savingsListContainer" class="desktop-grid-2"></div>
+    </div>
+  </div>
+
+  <!-- VIEW 4: VENDOR -->
+  <div id="view-vendor" class="view">
+    <div class="secondary-top-bar" style="justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button class="btn-back" onclick="handleCustomBack()">‹</button>
+        <div>
+          <div class="section-title">Direktori Vendor</div>
+          <div class="section-subtitle" style="margin-bottom: 0;">Kelola dan bandingkan vendor impianmu</div>
+        </div>
+      </div>
+      <button style="background: var(--primary); color: #fff; border: none; padding: 8px 18px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer;" onclick="openAddVendorModal()">+ Vendor</button>
+    </div>
+
+    <div id="vendorListFull" class="desktop-grid-3"></div>
+  </div>
+
+  <!-- VIEW 5: TAMU -->
+  <div id="view-tamu" class="view">
+    <div class="secondary-top-bar" style="justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button class="btn-back" onclick="handleCustomBack()">‹</button>
+        <div>
+          <div class="section-title">Daftar Tamu Undangan</div>
+          <div class="section-subtitle" id="tamuSummarySub" style="margin-bottom: 0;">0 relasi · 0 pax</div>
+        </div>
+      </div>
+      <button style="background: var(--primary); color: #fff; border: none; padding: 8px 18px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; cursor: pointer;" onclick="openAddGuestModal()">+ Tamu</button>
+    </div>
+
+    <div id="guestListFull" class="desktop-grid-3"></div>
+  </div>
+
+  <!-- VIEW 6: PROFIL & PENGATURAN -->
+  <div id="view-profil" class="view">
+    <div class="secondary-top-bar" style="border-bottom: none; margin-bottom: 4px; padding-bottom: 0;">
+      <button class="btn-back" onclick="handleCustomBack()">‹</button>
+      <div class="section-title">Profil & Pengaturan Acara</div>
+    </div>
+    
+    <div class="desktop-grid-2">
+      <div class="card" style="text-align: center; padding: 32px 20px;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px;" id="profAvatar">💍</div>
+        <div style="font-size: 1.4rem; font-weight: 800;" id="profNameDisplay">Calon Pengantin</div>
+        <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 4px;" id="profDateDisplay">Belum ditentukan</div>
+      </div>
+
+      <div class="card">
+        <div style="font-weight: 800; font-size: 1rem; margin-bottom: 16px;">Rincian Data Pernikahan</div>
+        <form onsubmit="submitProfile(event)">
+          <div class="input-group">
+            <label class="input-label">Nama Calon Mempelai Pria *</label>
+            <input type="text" class="app-input" id="pGroom" placeholder="Nama Pria" required />
+          </div>
+          <div class="input-group">
+            <label class="input-label">Nama Calon Mempelai Wanita *</label>
+            <input type="text" class="app-input" id="pBride" placeholder="Nama Wanita" required />
+          </div>
+          <div class="input-group">
+            <label class="input-label">Tanggal Pernikahan *</label>
+            <input type="date" class="app-input" id="pDate" required />
+          </div>
+          <div class="input-group">
+            <label class="input-label">Target Plafon Anggaran (Rp) *</label>
+            <input type="number" class="app-input" id="pBudget" placeholder="Contoh: 150000000" required />
+          </div>
+          <button type="submit" class="btn-app-main" style="width: 100%; margin-top: 14px;">Simpan Perubahan</button>
+        </form>
+
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--border);" />
+        
+        <button type="button" style="width: 100%; padding: 10px; background: none; border: 1px solid #DC2626; color: #DC2626; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.85rem; cursor: pointer;" onclick="resetAllTemplateData()">
+          ⚠️ Reset / Buat Rencana Baru (Kosongkan Template)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navbar Mobile -->
+  <nav class="bottom-navbar">
+    <button class="nav-item active" onclick="switchMainView('view-beranda')">
+      <span class="nav-item-icon">🏠</span>
+      <span>Beranda</span>
+    </button>
+    <button class="nav-item" onclick="switchMainView('view-checklist')">
+      <span class="nav-item-icon">🎚️</span>
+      <span>Checklist</span>
+    </button>
+    <button class="nav-item" onclick="switchMainView('view-anggaran')">
+      <span class="nav-item-icon">👛</span>
+      <span>Anggaran</span>
+    </button>
+    <button class="nav-item" onclick="switchMainView('view-profil')">
+      <span class="nav-item-icon">👤</span>
+      <span>Profil</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ================= MODAL ONBOARDING / SETUP AWAL PEMBELI ================= -->
+<div class="modal-overlay" id="modalOnboarding">
+  <div class="bottom-sheet" style="padding-top: 26px;">
+    <div style="font-size: 2.2rem; text-align: center; margin-bottom: 8px;">💍</div>
+    <div class="sheet-title" style="text-align: center; font-size: 1.35rem;">Selamat Datang!</div>
+    <div class="sheet-subtitle" style="text-align: center;">Mulai rencanakan hari pernikahan bahagia Anda bersama pasangan.</div>
+    <form onsubmit="submitOnboarding(event)">
+      <div class="input-group">
+        <label class="input-label">Nama Calon Mempelai Pria *</label>
+        <input type="text" class="app-input" id="obGroom" placeholder="Contoh: Rian" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Nama Calon Mempelai Wanita *</label>
+        <input type="text" class="app-input" id="obBride" placeholder="Contoh: Sarah" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Tanggal Pernikahan *</label>
+        <input type="date" class="app-input" id="obDate" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Target Plafon Anggaran (Rp) *</label>
+        <input type="number" class="app-input" id="obBudget" placeholder="Contoh: 150000000" min="1000000" required />
+      </div>
+      <button type="submit" class="btn-app-main" style="width: 100%; margin-top: 14px; padding: 14px; font-size: 1rem;">
+        Mulai Rencanakan Pernikahan ✨
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Tambah Milestone Sendiri -->
+<div class="modal-overlay" id="modalAddMilestone">
+  <div class="bottom-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Tambah Milestone Baru</div>
+    <form onsubmit="submitNewMilestone(event)">
+      <div class="input-group">
+        <label class="input-label">Judul Milestone *</label>
+        <input type="text" class="app-input" id="newMsTitle" placeholder="Contoh: Prewedding & Honeymoon" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Deskripsi Singkat *</label>
+        <input type="text" class="app-input" id="newMsDesc" placeholder="Contoh: Tiket pesawat, paspor, koper, dan hotel" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Ikon Emoji</label>
+        <input type="text" class="app-input" id="newMsIcon" placeholder="✈️, 💍, 🏖️, dll" value="✈️" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Tugas Awal (Opsional - pisahkan dengan Enter)</label>
+        <textarea class="app-textarea" id="newMsTasks" rows="3" placeholder="Contoh:&#10;Bikin paspor bareng&#10;Booking tiket pesawat promo&#10;Pilih hotel"></textarea>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn-app-secondary" onclick="closeModal('modalAddMilestone')">Batal</button>
+        <button type="submit" class="btn-app-main">Simpan Milestone</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Catat Pengeluaran -->
+<div class="modal-overlay" id="modalExpense">
+  <div class="bottom-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Catat Pengeluaran</div>
+    <form onsubmit="submitExpense(event)">
+      <div class="input-group">
+        <label class="input-label">Kategori</label>
+        <select class="app-select" id="expCat" onchange="handleCategoryCustomToggle('expCat', 'expCatCustomGroup')" required></select>
+      </div>
+      <div class="input-group" id="expCatCustomGroup" style="display: none;">
+        <label class="input-label">Sebutkan Nama Kategori Lainnya *</label>
+        <input type="text" class="app-input" id="expCatCustom" placeholder="Misal: Souvenir tambahan, MC, Photobooth" />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Nama pengeluaran *</label>
+        <input type="text" class="app-input" id="expTitle" placeholder="Contoh: DP Gedung" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Rp Jumlah *</label>
+        <input type="number" class="app-input" id="expAmount" placeholder="0" min="0" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Status</label>
+        <div class="status-pills-row">
+          <div class="status-pill active" id="pillLunas" onclick="setStatusSelect('Lunas')">Lunas</div>
+          <div class="status-pill" id="pillDp" onclick="setStatusSelect('DP')">DP</div>
+          <div class="status-pill" id="pillBelum" onclick="setStatusSelect('Belum Bayar')">Belum Bayar</div>
+        </div>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Vendor (opsional)</label>
+        <input type="text" class="app-input" id="expVendor" placeholder="Nama vendor" />
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn-app-secondary" onclick="closeModal('modalExpense')">Batal</button>
+        <button type="submit" class="btn-app-main">Catat</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Catat Tabungan -->
+<div class="modal-overlay" id="modalSaving">
+  <div class="bottom-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Catat Tabungan</div>
+    <form onsubmit="submitSaving(event)">
+      <div class="input-group">
+        <label class="input-label">Nominal *</label>
+        <input type="number" class="app-input" id="savAmount" placeholder="Rp 0" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Dari siapa</label>
+        <select class="app-select" id="savFrom">
+          <!-- Diisi otomatis oleh nama mempelai -->
+        </select>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Sumber dana (gaji, bonus, hadiah)</label>
+        <input type="text" class="app-input" id="savSource" placeholder="Gaji bulanan, THR, tabungan" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Catatan (opsional)</label>
+        <input type="text" class="app-input" id="savNotes" placeholder="Catatan setoran..." />
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn-app-secondary" onclick="closeModal('modalSaving')">Batal</button>
+        <button type="submit" class="btn-app-main">Catat</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Target Anggaran -->
+<div class="modal-overlay" id="modalBudget">
+  <div class="bottom-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Atur Total Target Anggaran</div>
+    <form onsubmit="submitBudgetTotal(event)">
+      <div class="input-group">
+        <label class="input-label">Total Target Anggaran (Rp)</label>
+        <input type="number" class="app-input" id="setTotalBudgetVal" required />
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn-app-secondary" onclick="closeModal('modalBudget')">Batal</button>
+        <button type="submit" class="btn-app-main">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Pos Kategori Budget -->
+<div class="modal-overlay" id="modalCategory">
+  <div class="bottom-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" id="modalCategoryTitle">Tambah Pos Kategori</div>
+    <form onsubmit="submitCategory(event)">
+      <input type="hidden" id="editCatId" />
+      <div class="input-group">
+        <label class="input-label">Nama Pos Kategori</label>
+        <input type="text" class="app-input" id="catNameInput" placeholder="Contoh: Souvenir & Undangan" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Estimasi Budget (Rp)</label>
+        <input type="number" class="app-input" id="catEstInput" placeholder="0" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Icon Emoji</label>
+        <input type="text" class="app-input" id="catIconInput" placeholder="🏛️, 🍽️, 📸, 👗, dll" value="📦" />
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn-app-secondary" onclick="closeModal('modalCategory')">Batal</button>
+        <button type="submit" class="btn-app-main">Simpan Pos</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Tambah Vendor -->
+<div class="modal-overlay" id="modalVendor">
+  <div class="bottom-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Tambah Vendor</div>
+    <form onsubmit="submitVendor(event)">
+      <div class="input-group">
+        <label class="input-label">Nama Vendor *</label>
+        <input type="text" class="app-input" id="vName" placeholder="Contoh: Plataran Cilandak" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Kategori Vendor</label>
+        <select class="app-select" id="vCategory" onchange="handleCategoryCustomToggle('vCategory', 'vCatCustomGroup')">
+          <option value="Venue & Gedung">Venue & Gedung</option>
+          <option value="Katering">Katering</option>
+          <option value="Foto & Video">Foto & Video</option>
+          <option value="Dekorasi & Bunga">Dekorasi & Bunga</option>
+          <option value="Busana Pengantin">Busana Pengantin</option>
+          <option value="Undangan & Souvenir">Undangan & Souvenir</option>
+          <option value="Wedding Organizer">Wedding Organizer</option>
+          <option value="Lain-lain">Lain-lain</option>
+        </select>
+      </div>
+      <div class="input-group" id="vCatCustomGroup" style="display: none;">
+        <label class="input-label">Sebutkan Kategori Lainnya *</label>
+        <input type="text" class="app-input" id="vCatCustom" placeholder="Misal: Lighting, Photobooth, Fireworks" />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Nama PIC / Kontak</label>
+        <input type="text" class="app-input" id="vPic" placeholder="Mbak Rini" />
+      </div>
+      <div class="input-group">
+        <label class="input-label">No. WhatsApp</label>
+        <input type="tel" class="app-input" id="vPhone" placeholder="08xxxxxxxxxx" />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Instagram / Email</label>
+        <input type="text" class="app-input" id="vIg" placeholder="@akunvendor" />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Harga Penawaran (Rp)</label>
+        <input type="number" class="app-input" id="vPrice" placeholder="0" />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Catatan</label>
+        <input type="text" class="app-input" id="vNotes" placeholder="Termasuk test food 6 orang..." />
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn-app-secondary" onclick="closeModal('modalVendor')">Batal</button>
+        <button type="submit" class="btn-app-main">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Tambah Tamu -->
+<div class="modal-overlay" id="modalGuest">
+  <div class="bottom-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Tambah Tamu Undangan</div>
+    <form onsubmit="submitGuest(event)">
+      <div class="input-group">
+        <label class="input-label">Nama Tamu / Relasi *</label>
+        <input type="text" class="app-input" id="gName" placeholder="Bpk. Bambang & Keluarga" required />
+      </div>
+      <div class="input-group">
+        <label class="input-label">No. WhatsApp</label>
+        <input type="tel" class="app-input" id="gPhone" placeholder="08xxxxxxxxxx" />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Kelompok</label>
+        <select class="app-select" id="gGroup" onchange="handleCategoryCustomToggle('gGroup', 'gGroupCustomGroup')">
+          <option value="Keluarga Inti">Keluarga Inti</option>
+          <option value="Keluarga Besar">Keluarga Besar</option>
+          <option value="Sahabat Dekat">Sahabat Dekat</option>
+          <option value="Teman Kantor">Teman Kantor</option>
+          <option value="Teman Sekolah / Kuliah">Teman Sekolah / Kuliah</option>
+          <option value="VIP">VIP</option>
+          <option value="Lain-lain">Lain-lain</option>
+        </select>
+      </div>
+      <div class="input-group" id="gGroupCustomGroup" style="display: none;">
+        <label class="input-label">Sebutkan Kelompok Lainnya *</label>
+        <input type="text" class="app-input" id="gGroupCustom" placeholder="Misal: Komunitas Sepeda, Tetangga Komplek" />
+      </div>
+      <div class="input-group">
+        <label class="input-label">Undangan dari Pihak</label>
+        <select class="app-select" id="gSide">
+          <!-- Diisi dinamis sesuai nama kedua mempelai -->
+        </select>
+      </div>
+      <div class="input-group">
+        <label class="input-label">Jumlah Pax</label>
+        <input type="number" class="app-input" id="gPax" value="2" min="1" required />
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn-app-secondary" onclick="closeModal('modalGuest')">Batal</button>
+        <button type="submit" class="btn-app-main">Tambah</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const MASTER_10_MILESTONES = [
+    {
+      id: 1, title: "Venue & Akad", desc: "Survey, booking, dan persiapan tempat akad", icon: "🏛️", active: true,
+      tasks: [
+        { id: 101, text: "Tentukan estimasi kapasitas tamu & konsep venue (indoor/outdoor)", done: false },
+        { id: 102, text: "Riset dan survey lokasi calon venue akad & resepsi", done: false },
+        { id: 103, text: "Cek ketersediaan tanggal & fasilitas gedung (listrik, ruang rias, parkir)", done: false },
+        { id: 104, text: "Booking venue dan pembayaran uang muka (DP)", done: false },
+        { id: 105, text: "Survey tempat akad nikah (Masjid / Gedung / KUA) & jadwal penghulu", done: false },
+        { id: 106, text: "Konfirmasi aturan teknis gedung & izin keramaian", done: false }
+      ]
+    },
+    {
+      id: 2, title: "Vendor Utama", desc: "Foto/video, katering, dekorasi, MC, dan transportasi", icon: "🤝", active: true,
+      tasks: [
+        { id: 201, text: "Riset menu dan jadwalkan sesi test food katering", done: false },
+        { id: 202, text: "Pilih paket katering & booking vendor katering (DP)", done: false },
+        { id: 203, text: "Riset portofolio & booking vendor fotografi dan videografi", done: false },
+        { id: 204, text: "Booking vendor dekorasi pelaminan & panggung acara", done: false },
+        { id: 205, text: "Booking Master of Ceremony (MC) akad & resepsi", done: false },
+        { id: 206, text: "Booking vendor musik, entertainment, dan sound system", done: false },
+        { id: 207, text: "Sewa mobil pengantin dan armada transportasi keluarga", done: false },
+        { id: 208, text: "Review kontrak kerja & jadwal termin pembayaran semua vendor", done: false }
+      ]
+    },
+    {
+      id: 3, title: "Busana & Penampilan", desc: "Baju pengantin, fitting, MUA, dan seragam keluarga", icon: "👗", active: true,
+      tasks: [
+        { id: 301, text: "Tentukan konsep & desainer baju pengantin akad dan resepsi", done: false },
+        { id: 302, text: "Sewa / jahit busana pengantin pria dan wanita", done: false },
+        { id: 303, text: "Booking Make Up Artist (MUA) untuk kedua mempelai", done: false },
+        { id: 304, text: "Jadwalkan sesi konsultasi dan tes makeup (trial makeup)", done: false },
+        { id: 305, text: "Fitting busana pengantin tahap awal", done: false },
+        { id: 306, text: "Fitting akhir (final fitting) busana pengantin H-14", done: false },
+        { id: 307, text: "Beli bahan kain dan bagikan seragam keluarga serta bridesmaid", done: false }
+      ]
+    },
+    {
+      id: 4, title: "Undangan & Tamu", desc: "Desain, cetak, kirim undangan, dan kelola RSVP", icon: "✉️", active: true,
+      tasks: [
+        { id: 401, text: "Susun daftar nama tamu pihak mempelai pria dan keluarga", done: false },
+        { id: 402, text: "Susun daftar nama tamu pihak mempelai wanita dan keluarga", done: false },
+        { id: 403, text: "Kelompokkan kategori tamu (Keluarga, Kantor, Sahabat, VIP)", done: false },
+        { id: 404, text: "Tentukan konsep desain undangan cetak & undangan website digital", done: false },
+        { id: 405, text: "Pesan & buat link undangan pernikahan digital interaktif", done: false },
+        { id: 406, text: "Proofing desain dan cetak massal undangan fisik", done: false },
+        { id: 407, text: "Tempel label nama dan packing rapi undangan fisik", done: false },
+        { id: 408, text: "Kirim undangan fisik ke keluarga besar & tamu VIP (H-30)", done: false },
+        { id: 409, text: "Sebarkan undangan digital via WhatsApp & pantau konfirmasi RSVP", done: false }
+      ]
+    },
+    {
+      id: 5, title: "Konsep & Dekorasi", desc: "Tema, palet warna, moodboard, dan detail dekorasi", icon: "🌸", active: true,
+      tasks: [
+        { id: 501, text: "Buat moodboard tema pernikahan dan palet warna (color palette)", done: false },
+        { id: 502, text: "Tentukan desain backdrop pelaminan dan panggung utama", done: false },
+        { id: 503, text: "Tentukan dekorasi lorong masuk (aisle), gate, dan welcome sign", done: false },
+        { id: 504, text: "Tentukan area photobooth, photo gallery, dan meja penerima tamu", done: false },
+        { id: 505, text: "Pesan hand bouquet pengantin dan korsase bunga jas keluarga", done: false },
+        { id: 506, text: "Siapkan kotak angpau/uang, buku tamu, spidol, dan suvenir meja", done: false }
+      ]
+    },
+    {
+      id: 6, title: "Anggaran & Administrasi", desc: "Kelola budget, rundown, dan koordinasi acara", icon: "📊", active: true,
+      tasks: [
+        { id: 601, text: "Tetapkan target plafon budget dan alokasi per pos kategori", done: false },
+        { id: 602, text: "Buka rekening bersama untuk tabungan dana nikah", done: false },
+        { id: 603, text: "Catat setiap uang keluar, pembayaran termin DP, dan pelunasan vendor", done: false },
+        { id: 604, text: "Susun struktur panitia keluarga inti dan pembagian tugas tugasnya", done: false },
+        { id: 605, text: "Susun rundown detail acara akad dan resepsi menit per menit", done: false },
+        { id: 606, text: "Sediakan pos dana darurat tak terduga (kontingensi) minimal 10%", done: false }
+      ]
+    },
+    {
+      id: 7, title: "Cincin & Mahar", desc: "Cincin kawin, mahar pernikahan, hantaran, dan seserahan", icon: "💍", active: true,
+      tasks: [
+        { id: 701, text: "Riset model, ukuran jari, dan beli sepasang cincin kawin", done: false },
+        { id: 702, text: "Ukir grafir nama pasangan dan tanggal pernikahan pada cincin", done: false },
+        { id: 703, text: "Tentukan jenis & nominal mahar (logam mulia / uang tunai)", done: false },
+        { id: 704, text: "Belanja perlengkapan barang seserahan / hantaran", done: false },
+        { id: 705, text: "Hias boks seserahan dan figura hiasan mahar pernikahan", done: false }
+      ]
+    },
+    {
+      id: 8, title: "Dokumen & KUA", desc: "Surat pengantar, berkas KUA, tes kesehatan, dan bimbingan", icon: "📑", active: true,
+      tasks: [
+        { id: 801, text: "Urus surat pengantar RT, RW, dan Kelurahan (Formulir N1 - N4)", done: false },
+        { id: 802, text: "Pemeriksaan kesehatan pranikah & imunisasi TT di Puskesmas", done: false },
+        { id: 803, text: "Daftarkan berkas nikah ke KUA setempat (online/offline Simkah)", done: false },
+        { id: 804, text: "Ikuti kelas bimbingan perkawinan (Bimwin) mandiri atau KUA", done: false },
+        { id: 805, text: "Bayar biaya pencatatan nikah bila akad di luar KUA/hari libur", done: false },
+        { id: 806, text: "Konfirmasi nama dan jadwal kehadiran penghulu yang bertugas di hari-H", done: false }
+      ]
+    },
+    {
+      id: 9, title: "Souvenir & Logistik", desc: "Pilih souvenir, cetak kartu ucapan, kemasan, dan distribusi", icon: "🎁", active: true,
+      tasks: [
+        { id: 901, text: "Riset dan pesan souvenir pernikahan yang fungsional & berkesan", done: false },
+        { id: 902, text: "Desain dan cetak kartu ucapan terima kasih (thanks card)", done: false },
+        { id: 903, text: "Pengecekan jumlah, kualitas, dan kemasan rapi souvenir", done: false },
+        { id: 904, text: "Siapkan bingkisan / hampers apresiasi panitia & keluarga inti", done: false },
+        { id: 905, text: "Tentukan tim koordinator logistik & pembagian souvenir di venue", done: false }
+      ]
+    },
+    {
+      id: 10, title: "Hari-H & Rundown", desc: "Technical meeting, gladi resik, emergency kit, dan koordinasi", icon: "⚡", active: true,
+      tasks: [
+        { id: 1001, text: "Technical Meeting (TM) seluruh vendor dan keluarga di venue", done: false },
+        { id: 1002, text: "Gladi resik prosesi akad nikah dan kirab masuk resepsi", done: false },
+        { id: 1003, text: "Siapkan bridal emergency kit (peniti, benang, jarum, obat pribadi, tisu)", done: false },
+        { id: 1004, text: "Pelunasan seluruh sisa tagihan kepada semua vendor pernikahan", done: false },
+        { id: 1005, text: "Koordinasi tim pembawa kotak uang/angpau dan konsumsi panitia", done: false },
+        { id: 1006, text: "Istirahat cukup dan siapkan mental terbaik menyambut hari bahagia", done: false }
+      ]
+    }
+  ];
+
+  const DEFAULT_CATEGORIES = [
+    { id: 1, name: "Venue & Gedung", icon: "🏛️", est: 0 },
+    { id: 2, name: "Katering", icon: "🍽️", est: 0 },
+    { id: 3, name: "Foto & Video", icon: "📸", est: 0 },
+    { id: 4, name: "Dekorasi & Bunga", icon: "💐", est: 0 },
+    { id: 5, name: "Busana Pengantin", icon: "👗", est: 0 },
+    { id: 6, name: "Undangan", icon: "✉️", est: 0 },
+    { id: 7, name: "Transportasi", icon: "🚗", est: 0 },
+    { id: 8, name: "Lain-lain", icon: "📦", est: 0 }
+  ];
+
+  // Global State (Clean White-Label)
+  let app = {
+    profile: JSON.parse(localStorage.getItem('wp_template_profile')) || {
+      groom: "",
+      bride: "",
+      date: "",
+      totalBudget: 0,
+      isConfigured: false
+    },
+    categories: JSON.parse(localStorage.getItem('wp_template_categories')) || DEFAULT_CATEGORIES,
+    expenses: JSON.parse(localStorage.getItem('wp_template_expenses')) || [],
+    savings: JSON.parse(localStorage.getItem('wp_template_savings')) || [],
+    vendors: JSON.parse(localStorage.getItem('wp_template_vendors')) || [],
+    guests: JSON.parse(localStorage.getItem('wp_template_guests')) || [],
+    milestones: JSON.parse(localStorage.getItem('wp_template_milestones')) || MASTER_10_MILESTONES
+  };
+
+  let selectedStatus = 'Lunas';
+  let activeModal = null;
+  let currentActiveView = 'view-beranda';
+
+  function saveStorage(key) {
+    localStorage.setItem(`wp_template_${key}`, JSON.stringify(app[key]));
+  }
+
+  function formatRp(num) {
+    return 'Rp ' + Number(num || 0).toLocaleString('id-ID');
+  }
+
+  function formatJuta(num) {
+    const val = Number(num || 0);
+    if (val >= 1000000000) {
+      let mVal = val / 1000000000;
+      if (mVal > 1000) mVal = 1000;
+      let formatted = (mVal % 1 === 0) ? mVal.toLocaleString('id-ID') : mVal.toFixed(1).replace('.', ',');
+      return `Rp ${formatted} M`;
+    }
+    if (val >= 1000000) {
+      let jVal = val / 1000000;
+      let formatted = (jVal % 1 === 0) ? jVal.toLocaleString('id-ID') : jVal.toFixed(1).replace('.', ',');
+      return `Rp ${formatted} Juta`;
+    }
+    return formatRp(val);
+  }
+
+  function handleCategoryCustomToggle(selectId, groupContainerId) {
+    const selectEl = document.getElementById(selectId);
+    const customGroup = document.getElementById(groupContainerId);
+    if (selectEl.value === 'Lain-lain' || selectEl.value === 'Lainnya') {
+      customGroup.style.display = 'flex';
+    } else {
+      customGroup.style.display = 'none';
+    }
+  }
+
+  // Update Dynamic Names (Dropdown Tabungan & Tamu)
+  function refreshDynamicNames() {
+    const groom = app.profile.groom || 'Mempelai Pria';
+    const bride = app.profile.bride || 'Mempelai Wanita';
+    const coupleText = (app.profile.groom && app.profile.bride) 
+      ? `${app.profile.groom} & ${app.profile.bride}` 
+      : 'Calon Pengantin';
+
+    document.getElementById('topCoupleDisplay').innerText = coupleText;
+    document.getElementById('profNameDisplay').innerText = coupleText;
+
+    // Avatar inisial
+    if (app.profile.groom && app.profile.bride) {
+      const initG = app.profile.groom.trim().charAt(0).toUpperCase();
+      const initB = app.profile.bride.trim().charAt(0).toUpperCase();
+      document.getElementById('profAvatar').innerText = `${initG}&${initB}`;
+    } else {
+      document.getElementById('profAvatar').innerText = '💍';
+    }
+
+    // Update Dropdown "Dari siapa" di Modal Catat Tabungan
+    const savSelect = document.getElementById('savFrom');
+    savSelect.innerHTML = `
+      <option value="${coupleText}">Bersama (${coupleText})</option>
+      <option value="${groom}">${groom}</option>
+      <option value="${bride}">${bride}</option>
+      <option value="Keluarga / Hadiah">Keluarga / Hadiah</option>
+    `;
+
+    // Update Dropdown "Undangan dari Pihak" di Modal Tamu
+    const sideSelect = document.getElementById('gSide');
+    sideSelect.innerHTML = `
+      <option value="Kedua Mempelai">Kedua Mempelai</option>
+      <option value="Pihak ${groom}">Pihak ${groom}</option>
+      <option value="Pihak ${bride}">Pihak ${bride}</option>
+    `;
+  }
+
+  function updateCountdown() {
+    refreshDynamicNames();
+
+    if (!app.profile.date) {
+      document.getElementById('heroDateDisplay').innerText = "Tentukan Tanggal Acara";
+      document.getElementById('profDateDisplay').innerText = "Belum ditentukan";
+      document.getElementById('topDaysSub').innerText = "Rencanakan pernikahanmu";
+      document.getElementById('heroMainDays').innerText = "0";
+      document.getElementById('pillMonths').innerText = "0 bln";
+      document.getElementById('pillWeeks').innerText = "0 mgg";
+      document.getElementById('pillDays').innerText = "0 hr";
+      document.getElementById('danaNeeded').innerText = formatJuta(app.profile.totalBudget);
+      document.getElementById('danaMonthlyAdvice').innerText = "Rp 0";
+      return;
+    }
+
+    const targetDate = new Date(app.profile.date + 'T00:00:00');
+    const now = new Date();
+    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+    const dateFormatted = targetDate.toLocaleDateString('id-ID', options);
+    
+    document.getElementById('heroDateDisplay').innerText = dateFormatted;
+    document.getElementById('profDateDisplay').innerText = dateFormatted;
+
+    const diffMs = targetDate - now;
+    const diffDays = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+    
+    document.getElementById('topDaysSub').innerText = `${diffDays} hari lagi`;
+    document.getElementById('heroMainDays').innerText = diffDays;
+    
+    const months = Math.floor(diffDays / 30);
+    const weeks = Math.floor((diffDays % 30) / 7);
+
+    document.getElementById('pillMonths').innerText = `${months} bln`;
+    document.getElementById('pillWeeks').innerText = `${weeks} mgg`;
+    document.getElementById('pillDays').innerText = `${diffDays} hr`;
+
+    const totalCollected = app.savings.reduce((sum, s) => sum + s.amount, 0);
+    const remainingNeeded = Math.max(0, app.profile.totalBudget - totalCollected);
+    const effectiveMonths = Math.max(1, months);
+    const perMonth = Math.ceil(remainingNeeded / effectiveMonths);
+    
+    document.getElementById('danaNeeded').innerText = formatJuta(remainingNeeded);
+    document.getElementById('danaMonthlyAdvice').innerText = formatJuta(perMonth);
+  }
+
+  function switchMainView(viewId, pushHistory = true) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById(viewId).classList.add('active');
+    currentActiveView = viewId;
+
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const mobileMap = { 'view-beranda': 0, 'view-checklist': 1, 'view-anggaran': 2, 'view-profil': 3 };
+    if (mobileMap[viewId] !== undefined) {
+      document.querySelectorAll('.nav-item')[mobileMap[viewId]].classList.add('active');
+    }
+
+    document.querySelectorAll('.desktop-nav-btn').forEach(b => b.classList.remove('active'));
+    const deskMap = { 'view-beranda': 0, 'view-checklist': 1, 'view-anggaran': 2, 'view-vendor': 3, 'view-tamu': 4, 'view-profil': 5 };
+    if (deskMap[viewId] !== undefined) {
+      document.querySelectorAll('.desktop-nav-btn')[deskMap[viewId]].classList.add('active');
+    }
+
+    if (pushHistory) {
+      history.pushState({ view: viewId }, '', '#' + viewId.replace('view-', ''));
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function handleCustomBack() {
+    if (history.length > 1) {
+      window.history.back();
+    } else {
+      switchMainView('view-beranda');
+    }
+  }
+
+  window.onpopstate = function(event) {
+    if (activeModal) {
+      document.getElementById(activeModal).classList.remove('active');
+      activeModal = null;
+      return;
+    }
+    if (event.state && event.state.view) {
+      switchMainView(event.state.view, false);
+    } else {
+      switchMainView('view-beranda', false);
+    }
+  };
+
+  function goToAnggaranTab(tabName) {
+    switchMainView('view-anggaran');
+    switchAnggaranTab(tabName);
+  }
+
+  function switchAnggaranTab(tabName) {
+    document.getElementById('btnTabBudgeting').classList.toggle('active', tabName === 'budgeting');
+    document.getElementById('btnTabPengeluaran').classList.toggle('active', tabName === 'pengeluaran');
+    document.getElementById('btnTabDanaNikah').classList.toggle('active', tabName === 'dana-nikah');
+
+    document.getElementById('anggaran-sub-budgeting').style.display = tabName === 'budgeting' ? 'block' : 'none';
+    document.getElementById('anggaran-sub-pengeluaran').style.display = tabName === 'pengeluaran' ? 'block' : 'none';
+    document.getElementById('anggaran-sub-dananikah').style.display = tabName === 'dana-nikah' ? 'block' : 'none';
+  }
+
+  function renderMilestones() {
+    const cont = document.getElementById('milestonesContainer');
+    cont.innerHTML = '';
+    let selectedCount = 0;
+    const totalMilestones = app.milestones.length;
+
+    app.milestones.forEach(m => {
+      if (m.active) selectedCount++;
+      const doneCount = m.tasks.filter(t => t.done).length;
+
+      const card = document.createElement('div');
+      card.className = `milestone-box ${m.active ? 'selected' : ''}`;
+      card.innerHTML = `
+        <div class="milestone-top">
+          <div class="milestone-left" onclick="toggleMilestoneActive(${m.id}, event)">
+            <div class="milestone-circle-check ${m.active ? 'checked' : ''}">
+              ${m.active ? '✓' : ''}
+            </div>
+            <div class="milestone-icon-wrap">${m.icon}</div>
+            <div>
+              <div class="milestone-title">${m.title}</div>
+              <div class="milestone-desc">${m.desc}</div>
+            </div>
+          </div>
+          <div class="milestone-right">
+            <span onclick="toggleMilestoneAccordion(${m.id})" style="display:flex; align-items:center; gap:3px;">
+              <span>${m.tasks.length} tugas</span>
+              <span style="font-size:0.9rem;">⌄</span>
+            </span>
+            ${m.id > 10 ? `<button onclick="deleteMilestone(${m.id})" style="background:none; border:none; color:#DC2626; cursor:pointer; font-size:0.85rem; margin-left:6px;" title="Hapus Milestone">🗑</button>` : ''}
+          </div>
+        </div>
+
+        <div class="task-sublist" id="sublist-${m.id}">
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px; font-weight:700;">
+            Progres: ${doneCount}/${m.tasks.length} Selesai
+          </div>
+          <div id="tasks-container-${m.id}">
+            ${m.tasks.map(t => `
+              <div class="task-line ${t.done ? 'done' : ''}">
+                <div class="task-line-left">
+                  <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTaskDone(${m.id}, ${t.id})" />
+                  <span>${t.text}</span>
+                </div>
+                <button class="btn-task-del" onclick="deleteTaskFromMilestone(${m.id}, ${t.id})" title="Hapus Tugas">✕</button>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="add-task-inline-box">
+            <input type="text" class="input-task-inline" id="inputTask-${m.id}" placeholder="+ Tulis tugas baru untuk ${m.title}..." onkeydown="if(event.key==='Enter'){ event.preventDefault(); submitTaskToMilestone(${m.id}); }" />
+            <button type="button" class="btn-task-inline" onclick="submitTaskToMilestone(${m.id})">+ Tambah</button>
+          </div>
+        </div>
+      `;
+      cont.appendChild(card);
+    });
+
+    document.getElementById('milestoneCounterText').innerText = `${selectedCount} dari ${totalMilestones} milestone dipilih`;
+    const btnAll = document.getElementById('btnToggleAllMilestones');
+    btnAll.innerText = (selectedCount === totalMilestones) ? 'Batal pilih semua' : 'Pilih semua';
+
+    renderHomeTasks();
+  }
+
+  function toggleMilestoneActive(id, event) {
+    if (event) event.stopPropagation();
+    const m = app.milestones.find(x => x.id === id);
+    if (m) {
+      m.active = !m.active;
+      saveStorage('milestones');
+      renderMilestones();
+    }
+  }
+
+  function toggleMilestoneAccordion(id) {
+    const el = document.getElementById(`sublist-${id}`);
+    if (el) el.classList.toggle('open');
+  }
+
+  function toggleTaskDone(mId, tId) {
+    const m = app.milestones.find(x => x.id === mId);
+    if (m) {
+      const t = m.tasks.find(x => x.id === tId);
+      if (t) t.done = !t.done;
+      saveStorage('milestones');
+      renderMilestones();
+    }
+  }
+
+  function toggleSelectAllMilestones() {
+    const allSelected = app.milestones.every(m => m.active);
+    app.milestones.forEach(m => m.active = !allSelected);
+    saveStorage('milestones');
+    renderMilestones();
+  }
+
+  function submitTaskToMilestone(mId) {
+    const inputEl = document.getElementById(`inputTask-${mId}`);
+    if (!inputEl) return;
+    const taskText = inputEl.value.trim();
+    if (!taskText) return;
+
+    const m = app.milestones.find(x => x.id === mId);
+    if (m) {
+      m.tasks.push({ id: Date.now(), text: taskText, done: false });
+      saveStorage('milestones');
+      renderMilestones();
+      const sublist = document.getElementById(`sublist-${mId}`);
+      if (sublist) sublist.classList.add('open');
+    }
+  }
+
+  function deleteTaskFromMilestone(mId, tId) {
+    const m = app.milestones.find(x => x.id === mId);
+    if (m) {
+      m.tasks = m.tasks.filter(t => t.id !== tId);
+      saveStorage('milestones');
+      renderMilestones();
+      const sublist = document.getElementById(`sublist-${mId}`);
+      if (sublist) sublist.classList.add('open');
+    }
+  }
+
+  function openAddMilestoneModal() { openModal('modalAddMilestone'); }
+
+  function submitNewMilestone(e) {
+    e.preventDefault();
+    const title = document.getElementById('newMsTitle').value.trim();
+    const desc = document.getElementById('newMsDesc').value.trim();
+    const icon = document.getElementById('newMsIcon').value.trim() || '📌';
+    const tasksRaw = document.getElementById('newMsTasks').value.trim();
+
+    let initialTasks = [];
+    if (tasksRaw) {
+      const lines = tasksRaw.split('\n');
+      lines.forEach((line, index) => {
+        const textClean = line.trim();
+        if (textClean) initialTasks.push({ id: Date.now() + index, text: textClean, done: false });
+      });
+    }
+
+    const newMs = { id: Date.now(), title, desc, icon, active: true, tasks: initialTasks };
+    app.milestones.push(newMs);
+    saveStorage('milestones');
+    closeModal('modalAddMilestone');
+    e.target.reset();
+    renderMilestones();
+    setTimeout(() => { toggleMilestoneAccordion(newMs.id); }, 150);
+  }
+
+  function deleteMilestone(mId) {
+    if (confirm('Yakin ingin menghapus milestone ini beserta semua tugas di dalamnya?')) {
+      app.milestones = app.milestones.filter(m => m.id !== mId);
+      saveStorage('milestones');
+      renderMilestones();
+    }
+  }
+
+  function renderHomeTasks() {
+    const cont = document.getElementById('homeTaskListContainer');
+    let activeMilestones = app.milestones.filter(m => m.active);
+    let allActiveTasks = [];
+    activeMilestones.forEach(m => {
+      m.tasks.forEach(t => {
+        allActiveTasks.push({ ...t, milestoneId: m.id, milestoneTitle: m.title, milestoneIcon: m.icon });
+      });
+    });
+
+    if (allActiveTasks.length === 0) {
+      cont.innerHTML = `<div style="text-align: center; padding: 24px 0; font-size: 0.85rem; color: var(--text-muted);">Tidak ada tugas dengan deadline bulan ini 🎉</div>`;
+      return;
+    }
+
+    const completedTasks = allActiveTasks.filter(t => t.done).length;
+    const progressPercent = Math.round((completedTasks / allActiveTasks.length) * 100);
+    const pendingTasks = allActiveTasks.filter(t => !t.done);
+    const finishedTasks = allActiveTasks.filter(t => t.done);
+    const previewList = [...pendingTasks, ...finishedTasks].slice(0, 6);
+
+    let html = `
+      <div style="margin-bottom: 12px;">
+        <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:700; color:var(--text-muted); margin-bottom:4px;">
+          <span>${completedTasks} dari ${allActiveTasks.length} tugas selesai</span>
+          <span>${progressPercent}%</span>
+        </div>
+        <div style="height:6px; background:#EFEAE4; border-radius:6px; overflow:hidden;">
+          <div style="height:100%; width:${progressPercent}%; background:var(--primary); transition:width 0.3s;"></div>
+        </div>
+      </div>
+      <div>
+    `;
+
+    previewList.forEach(t => {
+      html += `
+        <div class="home-task-item">
+          <div class="home-task-left">
+            <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTaskDone(${t.milestoneId}, ${t.id})" />
+            <div>
+              <span class="task-badge-ms">${t.milestoneIcon} ${t.milestoneTitle}</span>
+              <div style="${t.done ? 'text-decoration:line-through; color:var(--text-muted);' : 'color:var(--text); font-weight:600;'} font-size:0.84rem;">
+                ${t.text}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+    cont.innerHTML = html;
+  }
+
+  function renderAllFinancials() {
+    const totalTarget = app.profile.totalBudget;
+    let totalSpent = 0;
+    let lunas = 0, dp = 0, belum = 0;
+
+    app.expenses.forEach(e => {
+      totalSpent += e.amount;
+      if (e.status === 'Lunas') lunas += e.amount;
+      else if (e.status === 'DP') dp += e.amount;
+      else belum += e.amount;
+    });
+
+    const percentSpent = totalTarget > 0 ? Math.min(100, Math.round((totalSpent / totalTarget) * 100)) : 0;
+    const deg = (percentSpent / 100) * 360;
+
+    ['circleProgressHome', 'circleProgressAnggaran'].forEach(id => {
+      document.getElementById(id).style.setProperty('--deg', `${deg}deg`);
+    });
+    document.getElementById('percentHome').innerText = `${percentSpent}%`;
+    document.getElementById('percentAnggaran').innerText = `${percentSpent}%`;
+
+    document.getElementById('homeTotalExpense').innerText = formatRp(totalSpent);
+    document.getElementById('homeTotalBudgetSub').innerText = `terpakai dari ${formatJuta(totalTarget)}`;
+
+    document.getElementById('anggaranRealisasi').innerText = formatRp(totalSpent);
+    document.getElementById('anggaranTargetSub').innerText = `realisasi dari ${formatRp(totalTarget)}`;
+    
+    const totalEst = app.categories.reduce((s, c) => s + (c.est || 0), 0);
+    const sisaEst = Math.max(0, totalTarget - totalEst);
+    document.getElementById('dotEst').innerText = `● Est. ${formatJuta(totalEst)}`;
+    document.getElementById('dotSisa').innerText = `● Sisa ${formatJuta(sisaEst)}`;
+
+    document.getElementById('boxBudgetPlafon').innerText = formatJuta(totalTarget);
+    document.getElementById('boxBudgetEst').innerText = formatJuta(totalEst);
+    document.getElementById('boxBudgetSisa').innerText = formatJuta(sisaEst);
+
+    renderCategoryList();
+
+    document.getElementById('statLunas').innerText = formatRp(lunas);
+    document.getElementById('statDp').innerText = formatRp(dp);
+    document.getElementById('statBelum').innerText = formatRp(belum);
+    document.getElementById('countTransactions').innerText = `${app.expenses.length} transaksi`;
+    renderExpenseList();
+
+    const collected = app.savings.reduce((s, item) => s + item.amount, 0);
+    const pctCollected = totalTarget > 0 ? Math.min(100, Math.round((collected / totalTarget) * 100)) : 0;
+    document.getElementById('brownCollected').innerText = formatRp(collected);
+    document.getElementById('brownFill').style.width = `${pctCollected}%`;
+    document.getElementById('brownPct').innerText = `${pctCollected}% terkumpul`;
+    document.getElementById('brownTargetLbl').innerText = `Target ${formatJuta(totalTarget)}`;
+    renderSavingsList();
+  }
+
+  function renderCategoryList() {
+    const cont = document.getElementById('budgetCategoryList');
+    cont.innerHTML = '';
+    app.categories.forEach(c => {
+      const item = document.createElement('div');
+      item.className = 'budget-item-card';
+      item.innerHTML = `
+        <div class="budget-item-left">
+          <div class="budget-item-icon">${c.icon || '📦'}</div>
+          <div>
+            <div class="budget-item-title">${c.name}</div>
+            <div class="budget-item-est">Est. ${c.est ? formatRp(c.est) : '—'}</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:6px; align-items:center;">
+          <button class="btn-action-icon" onclick="openEditCategory(${c.id})">✎</button>
+          <button class="btn-action-icon" style="color:#DC2626;" onclick="deleteCategory(${c.id})">🗑</button>
+        </div>
+      `;
+      cont.appendChild(item);
+    });
+
+    const sel = document.getElementById('expCat');
+    sel.innerHTML = app.categories.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+  }
+
+  function renderExpenseList() {
+    const cont = document.getElementById('expenseListContainer');
+    cont.innerHTML = '';
+    if (app.expenses.length === 0) {
+      cont.innerHTML = `
+        <div style="text-align: center; padding: 40px 10px; color: var(--text-muted); grid-column: 1/-1;">
+          <div style="font-size: 2.2rem; margin-bottom: 8px;">💸</div>
+          <div style="font-weight: 700; color: var(--text);">Belum ada pengeluaran</div>
+          <div style="font-size: 0.8rem; margin-top: 4px;">Tap "+ Catat Pengeluaran" untuk mencatat transaksi</div>
+        </div>`;
+      return;
+    }
+    app.expenses.forEach(e => {
+      const statusColor = e.status === 'Lunas' ? '#166534' : (e.status === 'DP' ? '#9A3412' : '#4B5563');
+      const item = document.createElement('div');
+      item.className = 'card';
+      item.style.padding = '14px 16px';
+      item.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div>
+            <div style="font-size:0.72rem; color:var(--text-muted); font-weight:700;">${e.category}</div>
+            <div style="font-size:0.95rem; font-weight:700; color:var(--text); margin:2px 0;">${e.title}</div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">${e.vendor || 'Vendor umum'}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:0.95rem; font-weight:800; color:var(--text);">${formatRp(e.amount)}</div>
+            <span style="display:inline-block; font-size:0.7rem; font-weight:700; color:${statusColor}; margin-top:4px;">${e.status}</span>
+            <button onclick="deleteExpense(${e.id})" style="background:none; border:none; color:#DC2626; cursor:pointer; font-size:0.75rem; display:block; margin-top:4px; margin-left:auto;">Hapus</button>
+          </div>
+        </div>
+      `;
+      cont.appendChild(item);
+    });
+  }
+
+  function renderSavingsList() {
+    const cont = document.getElementById('savingsListContainer');
+    cont.innerHTML = '';
+    if (app.savings.length === 0) {
+      cont.innerHTML = `<div style="text-align: center; padding: 20px; font-size: 0.85rem; color: var(--text-muted); grid-column: 1/-1;">Belum ada setoran.</div>`;
+      return;
+    }
+    app.savings.forEach(s => {
+      const item = document.createElement('div');
+      item.className = 'card';
+      item.style.padding = '14px 16px';
+      item.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:0.95rem; font-weight:700; color:var(--text);">${formatRp(s.amount)}</div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">${s.from} · ${s.source}</div>
+          </div>
+          <button onclick="deleteSaving(${s.id})" style="background:none; border:none; color:#DC2626; cursor:pointer; font-size:0.8rem;">🗑</button>
+        </div>
+      `;
+      cont.appendChild(item);
+    });
+  }
+
+  function renderVendors() {
+    const cont = document.getElementById('vendorListFull');
+    cont.innerHTML = '';
+    if (app.vendors.length === 0) {
+      cont.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); font-size:0.85rem; grid-column: 1/-1;">Belum ada vendor tersimpan.</div>`;
+      return;
+    }
+    app.vendors.forEach(v => {
+      const c = document.createElement('div');
+      c.className = 'card';
+      c.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div>
+            <span style="font-size:0.7rem; font-weight:700; color:var(--primary); background:var(--primary-soft); padding:3px 8px; border-radius:10px;">${v.category}</span>
+            <div style="font-size:1.05rem; font-weight:800; margin:6px 0 2px;">${v.name}</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">PIC: ${v.pic || '-'} · ${v.phone || '-'}</div>
+            <div style="font-size:0.8rem; color:var(--text-muted);">${v.ig || ''}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:1rem; font-weight:800; color:var(--text);">${formatRp(v.price)}</div>
+            <button onclick="deleteVendor(${v.id})" style="background:none; border:none; color:#DC2626; cursor:pointer; font-size:0.8rem; margin-top:8px;">🗑</button>
+          </div>
+        </div>
+        ${v.notes ? `<div style="font-size:0.78rem; background:#F8F5F1; padding:8px 10px; border-radius:8px; margin-top:10px; color:var(--text-muted);">${v.notes}</div>` : ''}
+      `;
+      cont.appendChild(c);
+    });
+  }
+
+  function renderGuests() {
+    const cont = document.getElementById('guestListFull');
+    cont.innerHTML = '';
+    let totalPax = 0;
+    app.guests.forEach(g => totalPax += Number(g.pax || 1));
+    document.getElementById('tamuSummarySub').innerText = `${app.guests.length} relasi · ${totalPax} pax`;
+
+    if (app.guests.length === 0) {
+      cont.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-muted); font-size:0.85rem; grid-column: 1/-1;">Belum ada daftar tamu.</div>`;
+      return;
+    }
+    app.guests.forEach(g => {
+      const c = document.createElement('div');
+      c.className = 'card';
+      c.style.padding = '14px 16px';
+      c.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:0.95rem; font-weight:700;">${g.name}</div>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">${g.group} · ${g.side}</div>
+            <div style="font-size:0.75rem; color:var(--text-muted);">${g.phone || ''}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:0.9rem; font-weight:800; color:var(--primary);">${g.pax} Pax</div>
+            <button onclick="deleteGuest(${g.id})" style="background:none; border:none; color:#DC2626; cursor:pointer; font-size:0.8rem; margin-top:4px;">🗑</button>
+          </div>
+        </div>
+      `;
+      cont.appendChild(c);
+    });
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+    activeModal = null;
+  }
+  
+  function openModal(id) {
+    activeModal = id;
+    document.getElementById(id).classList.add('active');
+    history.pushState({ modal: id }, '', '#' + id);
+  }
+
+  function openAddExpenseModal() {
+    handleCategoryCustomToggle('expCat', 'expCatCustomGroup');
+    openModal('modalExpense');
+  }
+  function openAddSavingModal() { openModal('modalSaving'); }
+  function openAddVendorModal() {
+    handleCategoryCustomToggle('vCategory', 'vCatCustomGroup');
+    openModal('modalVendor');
+  }
+  function openAddGuestModal() {
+    handleCategoryCustomToggle('gGroup', 'gGroupCustomGroup');
+    openModal('modalGuest');
+  }
+  function openBudgetModal() { 
+    document.getElementById('setTotalBudgetVal').value = app.profile.totalBudget;
+    openModal('modalBudget'); 
+  }
+  function openAddCategoryModal() {
+    document.getElementById('modalCategoryTitle').innerText = 'Tambah Pos Kategori';
+    document.getElementById('editCatId').value = '';
+    document.getElementById('catNameInput').value = '';
+    document.getElementById('catEstInput').value = '';
+    document.getElementById('catIconInput').value = '📦';
+    openModal('modalCategory');
+  }
+  function openEditCategory(id) {
+    const c = app.categories.find(x => x.id === id);
+    if (!c) return;
+    document.getElementById('modalCategoryTitle').innerText = 'Edit Pos Kategori';
+    document.getElementById('editCatId').value = c.id;
+    document.getElementById('catNameInput').value = c.name;
+    document.getElementById('catEstInput').value = c.est || 0;
+    document.getElementById('catIconInput').value = c.icon || '📦';
+    openModal('modalCategory');
+  }
+
+  function setStatusSelect(status) {
+    selectedStatus = status;
+    document.getElementById('pillLunas').classList.toggle('active', status === 'Lunas');
+    document.getElementById('pillDp').classList.toggle('active', status === 'DP');
+    document.getElementById('pillBelum').classList.toggle('active', status === 'Belum Bayar');
+  }
+
+  // ================= ONBOARDING & PROFIL HANDLER =================
+  function submitOnboarding(e) {
+    e.preventDefault();
+    app.profile.groom = document.getElementById('obGroom').value.trim();
+    app.profile.bride = document.getElementById('obBride').value.trim();
+    app.profile.date = document.getElementById('obDate').value;
+    app.profile.totalBudget = parseFloat(document.getElementById('obBudget').value) || 0;
+    app.profile.isConfigured = true;
+
+    saveStorage('profile');
+    closeModal('modalOnboarding');
+
+    // Sinkronkan ke form profil
+    document.getElementById('pGroom').value = app.profile.groom;
+    document.getElementById('pBride').value = app.profile.bride;
+    document.getElementById('pDate').value = app.profile.date;
+    document.getElementById('pBudget').value = app.profile.totalBudget;
+
+    updateCountdown();
+    renderAllFinancials();
+  }
+
+  function submitProfile(e) {
+    e.preventDefault();
+    app.profile.groom = document.getElementById('pGroom').value.trim();
+    app.profile.bride = document.getElementById('pBride').value.trim();
+    app.profile.date = document.getElementById('pDate').value;
+    app.profile.totalBudget = parseFloat(document.getElementById('pBudget').value) || 0;
+    app.profile.isConfigured = true;
+
+    saveStorage('profile');
+    alert('Rincian pernikahan berhasil disimpan!');
+    updateCountdown();
+    renderAllFinancials();
+  }
+
+  function resetAllTemplateData() {
+    if (confirm('Apakah Anda yakin ingin MENGOSONGKAN seluruh data dan mengembalikan aplikasi ke kondisi awal siap pakai?')) {
+      localStorage.clear();
+      location.reload();
+    }
+  }
+
+  function submitExpense(e) {
+    e.preventDefault();
+    let cat = document.getElementById('expCat').value;
+    if (cat === 'Lain-lain') {
+      const customVal = document.getElementById('expCatCustom').value.trim();
+      if (customVal) cat = `Lain-lain (${customVal})`;
+    }
+
+    app.expenses.push({
+      id: Date.now(),
+      category: cat,
+      title: document.getElementById('expTitle').value,
+      amount: parseFloat(document.getElementById('expAmount').value) || 0,
+      status: selectedStatus,
+      vendor: document.getElementById('expVendor').value
+    });
+    saveStorage('expenses');
+    closeModal('modalExpense');
+    e.target.reset();
+    document.getElementById('expCatCustomGroup').style.display = 'none';
+    renderAllFinancials();
+  }
+
+  function deleteExpense(id) {
+    app.expenses = app.expenses.filter(x => x.id !== id);
+    saveStorage('expenses');
+    renderAllFinancials();
+  }
+
+  function submitSaving(e) {
+    e.preventDefault();
+    app.savings.push({
+      id: Date.now(),
+      amount: parseFloat(document.getElementById('savAmount').value) || 0,
+      from: document.getElementById('savFrom').value,
+      source: document.getElementById('savSource').value,
+      notes: document.getElementById('savNotes').value
+    });
+    saveStorage('savings');
+    closeModal('modalSaving');
+    e.target.reset();
+    renderAllFinancials();
+    updateCountdown();
+  }
+
+  function deleteSaving(id) {
+    app.savings = app.savings.filter(x => x.id !== id);
+    saveStorage('savings');
+    renderAllFinancials();
+    updateCountdown();
+  }
+
+  function submitBudgetTotal(e) {
+    e.preventDefault();
+    app.profile.totalBudget = parseFloat(document.getElementById('setTotalBudgetVal').value) || 0;
+    saveStorage('profile');
+    closeModal('modalBudget');
+    renderAllFinancials();
+    updateCountdown();
+  }
+
+  function submitCategory(e) {
+    e.preventDefault();
+    const id = document.getElementById('editCatId').value;
+    const name = document.getElementById('catNameInput').value;
+    const est = parseFloat(document.getElementById('catEstInput').value) || 0;
+    const icon = document.getElementById('catIconInput').value || '📦';
+
+    if (id) {
+      const c = app.categories.find(x => x.id == id);
+      if (c) { c.name = name; c.est = est; c.icon = icon; }
+    } else {
+      app.categories.push({ id: Date.now(), name, est, icon });
+    }
+    saveStorage('categories');
+    closeModal('modalCategory');
+    renderAllFinancials();
+  }
+
+  function deleteCategory(id) {
+    app.categories = app.categories.filter(x => x.id !== id);
+    saveStorage('categories');
+    renderAllFinancials();
+  }
+
+  function submitVendor(e) {
+    e.preventDefault();
+    let cat = document.getElementById('vCategory').value;
+    if (cat === 'Lain-lain') {
+      const customVal = document.getElementById('vCatCustom').value.trim();
+      if (customVal) cat = `Lain-lain (${customVal})`;
+    }
+
+    app.vendors.push({
+      id: Date.now(),
+      name: document.getElementById('vName').value,
+      category: cat,
+      pic: document.getElementById('vPic').value,
+      phone: document.getElementById('vPhone').value,
+      ig: document.getElementById('vIg').value,
+      price: parseFloat(document.getElementById('vPrice').value) || 0,
+      notes: document.getElementById('vNotes').value
+    });
+    saveStorage('vendors');
+    closeModal('modalVendor');
+    e.target.reset();
+    document.getElementById('vCatCustomGroup').style.display = 'none';
+    renderVendors();
+  }
+
+  function deleteVendor(id) {
+    app.vendors = app.vendors.filter(x => x.id !== id);
+    saveStorage('vendors');
+    renderVendors();
+  }
+
+  function submitGuest(e) {
+    e.preventDefault();
+    let group = document.getElementById('gGroup').value;
+    if (group === 'Lain-lain') {
+      const customVal = document.getElementById('gGroupCustom').value.trim();
+      if (customVal) group = `Lain-lain (${customVal})`;
+    }
+
+    app.guests.push({
+      id: Date.now(),
+      name: document.getElementById('gName').value,
+      phone: document.getElementById('gPhone').value,
+      group: group,
+      side: document.getElementById('gSide').value,
+      pax: parseInt(document.getElementById('gPax').value, 10) || 1
+    });
+    saveStorage('guests');
+    closeModal('modalGuest');
+    e.target.reset();
+    document.getElementById('gGroupCustomGroup').style.display = 'none';
+    renderGuests();
+  }
+
+  function deleteGuest(id) {
+    app.guests = app.guests.filter(x => x.id !== id);
+    saveStorage('guests');
+    renderGuests();
+  }
+
+  // ================= INIT =================
+  window.onload = function() {
+    // Sinkronkan form profil dengan data tersimpan
+    document.getElementById('pGroom').value = app.profile.groom;
+    document.getElementById('pBride').value = app.profile.bride;
+    document.getElementById('pDate').value = app.profile.date;
+    document.getElementById('pBudget').value = app.profile.totalBudget || '';
+
+    history.replaceState({ view: 'view-beranda' }, '', '#beranda');
+
+    updateCountdown();
+    renderMilestones();
+    renderAllFinancials();
+    renderVendors();
+    renderGuests();
+
+    // JIKA USER BARU (Belum mengisi nama / belum konfigurasi), MUNCULKAN ONBOARDING MODAL
+    if (!app.profile.isConfigured || (!app.profile.groom && !app.profile.bride)) {
+      setTimeout(() => {
+        openModal('modalOnboarding');
+      }, 350);
+    }
+  };
+</script>
+</body>
+</html>
